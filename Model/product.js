@@ -25,6 +25,14 @@ const productSchema = mongoose.Schema(
             type: Number ,
             required:[true , ""]
         } ,
+        status: {
+            type: Boolean,
+            default: true
+          },
+        isDeleted: {
+            type: Boolean,
+            default :false
+        },
         discountPrice : {
             type: Number ,
             required:[true , ""]

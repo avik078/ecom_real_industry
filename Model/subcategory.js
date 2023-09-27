@@ -9,6 +9,14 @@ const subCategorySchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId ,
             required:[true , ""]
         } ,
+        status: {
+            type: Boolean,
+            default: true
+          },
+        isDeleted: {
+            type: Boolean,
+            default :false
+        },
         name:{
             type:String ,
             required:[true , ""]

@@ -21,10 +21,19 @@ const userSchema = mongoose.Schema(
             required:[true , ""],
             unique:true
         } ,
+        status: {
+            type: Boolean,
+            default: true
+          },
+        isDeleted: {
+            type: Boolean,
+            default :false
+        },
         password : {
             type: String ,
             required:[true , ""]
         },
+
         image : {
             type:String ,
             default : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHJwbef0PpvHIGYkNvZSFSHcD2vKdZuhLujWSmiNGmgw&s"
