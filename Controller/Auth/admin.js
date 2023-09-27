@@ -19,9 +19,7 @@ const postAdmin = async (req,res) => {
 
 //////////////////////////////////////////////////////// POST PIC
 const postAdminPic = async (req,res) => {
-
     await Admin.updateOne().then((data)=> res.status(200).json({}))
-
 }
 ///////////////////////////////////////////////////////////
 module.exports = {postAdmin}
