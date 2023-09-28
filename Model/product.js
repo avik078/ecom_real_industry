@@ -5,15 +5,15 @@ const mongoose = require('mongoose') ;
 const productSchema = mongoose.Schema( 
     
     {   
-        categoryId:{
+        catId:{
             type: mongoose.Schema.Types.ObjectId ,
             required:[true , ""]
         } ,
-        SubCategoryId:{
+        subId:{
             type: mongoose.Schema.Types.ObjectId ,
             required:[true , ""]
         } ,
-        name:{
+        proName:{
             type:String ,
             required:[true , ""]
         } ,

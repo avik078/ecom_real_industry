@@ -5,8 +5,9 @@ const mongoose = require('mongoose') ;
 
 const subCategorySchema = mongoose.Schema( 
     {   
-        subcategoryId:{
-            type: mongoose.Schema.Types.ObjectId ,
+       
+        subName:{
+            type:String ,
             required:[true , ""]
         } ,
         status: {
@@ -16,11 +17,7 @@ const subCategorySchema = mongoose.Schema(
         isDeleted: {
             type: Boolean,
             default :false
-        },
-        name:{
-            type:String ,
-            required:[true , ""]
-        } 
+        }   
     } 
     ,
     {

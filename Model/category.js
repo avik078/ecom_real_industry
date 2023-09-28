@@ -6,11 +6,8 @@ const mongoose = require('mongoose') ;
 const categorySchema = mongoose.Schema( 
     
     {   
-        categoryId:{
-            type: mongoose.Schema.Types.ObjectId ,
-            required:[true , ""]
-        } ,
-        name:{
+       
+        catName:{
             type:String ,
             required:[true , ""]
         } ,
