@@ -25,6 +25,10 @@ const productSchema = mongoose.Schema(
             type: Number ,
             required:[true , ""]
         } ,
+        stock : {
+            type: Number ,
+            required:[true , ""]
+        } ,
         status: {
             type: Boolean,
             default: true
@@ -41,6 +45,10 @@ const productSchema = mongoose.Schema(
             type: String ,
             required:[true , ""]
         },
+        rating : {
+            type: Number 
+        } ,
+        
         image : {
             type:String ,
             default : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHJwbef0PpvHIGYkNvZSFSHcD2vKdZuhLujWSmiNGmgw&s"

@@ -7,11 +7,12 @@ const Subcategory = require("../../Model/subcategory");
 ///////////////////////////////////////////////////////////POST Product
 const postPro = async (req, res) => {
   
-  await product.Catego
-  
-
-
-
+  await Product.create(req.body).then((data)=> {  
+    res.status(200).json({status:true,msg:"Product uploaded successfully" , data:data})
+    }).catch((error)=> {
+      res.status(400).json({status:false , msg: "Server Error ",data:error})
+    }) 
+    
 };
 
 ///////////////////////////////////////////////////////////POST category
