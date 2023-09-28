@@ -15,6 +15,7 @@ user.middleware_1 = async (req, res, next) => {
     try {
           const decoded = jwt.verify(token, "SECRET_KEY");
           if (decoded) {
+            req.user = decoded //{_id: "hjgdfkhskahd"}
             next();
              ////////////////
           } else {

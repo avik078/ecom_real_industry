@@ -101,7 +101,7 @@ const tokenLogin = async (req, res) => {
     try {
       const decoded = jwt.verify(token, "SECRET_KEY");
       const id = decoded._id
-      console.log(id)
+     
       await User.findOne({_id:id})
         .then((data) => {
           if (!data) {
