@@ -7,4 +7,4 @@ router.post("/proregister" ,adminPro.postPro)
 router.post("/catregister" ,adminPro.postCat)
 router.post("/subcatregister" ,adminPro.postSub)
 
-module.exports = router;
+module.exports = router ;

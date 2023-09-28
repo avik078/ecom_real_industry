@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var admin = require("../../Controller/Auth/admin");
-var  middleware_1 = require("../../service/middleware").middleware_1
+var user = require("../../Controller/Auth/user");
 
 
 
-router.use(middleware_1)
-router.post("/userregister" ,admin.postAdmin)
-router.post("/userlogin" ,admin.loginAdmin)
+router.post("/userregister" ,user.postUser)
+router.post("/userlogin" ,user.loginUser)
+router.post("/tokenlogin",user.tokenLogin)
+
 module.exports = router;

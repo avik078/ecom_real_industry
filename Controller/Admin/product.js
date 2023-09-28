@@ -14,7 +14,6 @@ const postPro = async (req, res) => {
     }) 
     
 };
-
 ///////////////////////////////////////////////////////////POST category
 const postCat = async (req, res) => {
   await Category.findOne({ catName: req.body.catName })
