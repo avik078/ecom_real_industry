@@ -1,3 +1,5 @@
+const Admin = require("../../Model/admin");
+
 const Product = require("../../Model/product");
 
 const Category = require("../../Model/category");
@@ -7,16 +9,33 @@ const Subcategory = require("../../Model/subcategory");
 ///////////////////////////////////////////////////////////POST Product
 const postPro = async (req, res) => {
   
-  await Product.create(req.body).then((data)=> {  
-    res.status(200).json({status:true,msg:"Product uploaded successfully" , data:data})
-    }).catch((error)=> {
-      res.status(400).json({status:false , msg: "Server Error ",data:error})
-    }) 
-    
+  const  {userID} = req
+  await  Admin.findOne({_id: new mongoose.Types.ObjectId(userID)}).then(async (data) => {
+    if (!data) {
+      res.status(200).json({status:false,msg:"Admin is not registed in DB"})
+    }else{
+      await Product.create(req.body).then((data)=> {  
+        res.status(200).json({status:true,msg:"Product uploaded successfully" , data:data})
+        }).catch((error)=> {
+          res.status(400).json({status:false , msg: "Server Error ! please try again !! ",data:error})
+        }) 
+    }
+  }).catch ((error) => {
+       res.status(400).json({status:false,msg:"server error !! Please try again", data:error})
+  })
+
+
 };
 ///////////////////////////////////////////////////////////POST category
 const postCat = async (req, res) => {
-  await Category.findOne({ catName: req.body.catName })
+
+  const  {userID} = req
+
+  await  Admin.findOne({_id: new mongoose.Types.ObjectId(userID)}).then(async (data) => {
+    if (!data) {
+      res.status(200).json({status:false,msg:"Admin is not registed in DB"})
+    }else{
+      await Category.findOne({ catName: req.body.catName })
     .then(async (data) => {
       if (!data) {
         await Category.create(req.body)
@@ -47,11 +66,23 @@ const postCat = async (req, res) => {
         data: error,
       });
     });
+
+    }
+  }).catch ((error) => {
+       res.status(400).json({status:false,msg:"server error !! Please try again", data:error})
+  })
+
+
 };
 /////////////////////////////////////////////////////////// POST subcategory
 
 const postSub = async (req, res) => {
-  await Subcategory.findOne({ subName: req.body.subName })
+
+  await  Admin.findOne({_id: new mongoose.Types.ObjectId(userID)}).then(async (data) => {
+    if (!data) {
+      res.status(200).json({status:false,msg:"Admin is not registed in DB"})
+    }else{
+      await Subcategory.findOne({ subName: req.body.subName })
     .then(async (data) => {
       if (!data) {
         await Subcategory.create(req.body)
@@ -82,6 +113,12 @@ const postSub = async (req, res) => {
         data: error,
       });
     });
+    }
+  }).catch ((error) => {
+       res.status(400).json({status:false,msg:"server error !! Please try again", data:error})
+  })
+
+
 };
 
 module.exports = { postPro, postCat, postSub };

@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 const user = {};
 
-///////////////////////////////////////////////////  header token verify
+///////////////////////////////////////////////////////////////  header token verify
 user.middleware_1 = async (req, res, next) => {
   console.log("middleware_1 is hit");
    
@@ -15,7 +15,7 @@ user.middleware_1 = async (req, res, next) => {
     try {
           const decoded = jwt.verify(token, "SECRET_KEY");
           if (decoded) {
-            req.user = decoded //{_id: "hjgdfkhskahd"}
+            req.userID = decoded  //  {_id: "hjgdfkhskahd"}
             next();
              ////////////////
           } else {
