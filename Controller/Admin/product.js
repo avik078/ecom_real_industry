@@ -80,7 +80,7 @@ const postCat = async (req, res) => {
 /////////////////////////////////////////////////////////// POST subcategory
 
 const postSub = async (req, res) => {
-
+  const  {userID} = req
   await  Admin.findOne({_id: new mongoose.Types.ObjectId(userID)}).then(async (data) => {
     if (!data) {
       res.status(200).json({status:false,msg:"Admin is not registed in DB"})
