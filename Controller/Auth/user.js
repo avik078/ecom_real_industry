@@ -73,6 +73,7 @@ const loginUser = async (req, res) => {
       } else {
         if (compareHash(password, data.password)) {
           ////////////////////////// ////////////////////////////////Login condition
+          
           const  signOb = {_id:data._id}
           const token = jwt.sign(signOb, "SECRET_KEY");
           res

@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 const User = require("../../Model/user");
 
 const Product = require("../../Model/product");
@@ -10,6 +12,8 @@ const Subcategory = require("../../Model/subcategory");
 const getAll = async (req, res) => {
   ////////////////////
   const { userID } = req;
+  console.log(userID)
+  console.log(typeof userID)
   await User.findOne({ _id: new mongoose.Types.ObjectId(userID) })
     .then(async (data) => {
       if (!data) {
