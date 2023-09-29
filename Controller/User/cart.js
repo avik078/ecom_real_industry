@@ -15,8 +15,15 @@ const Category = require("../../Model/category");
 /////////////////////////////////////////////////////////////////// GET from Cart
 const  getCart = async (req,res) => {
 
-    const  {user} = req 
-     
+    const  {userID} = req 
+    
+    await Cart.aggregate([{}]).then((data) => {
+ ///////////////////////
+    } ).catch((error)=> {
+        ////////////////
+    })
+
+
    //  res.status(200).json({msg:"This is get from cart"})
 }
 ////////////////////////////////////////////////////////////////// ADD to cart 
