@@ -10,7 +10,7 @@ user.middleware_1 = async (req, res, next) => {
   console.log("middleware_1 is hit");
    
  
-  const token = req.headers.authorization;
+const token = req.headers.authorization;
   if (token) {
     try {
           const decoded = jwt.verify(token, "SECRET_KEY");
@@ -36,6 +36,5 @@ user.middleware_1 = async (req, res, next) => {
 
  
 };
-
 
 module.exports = user;

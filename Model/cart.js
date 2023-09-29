@@ -10,8 +10,8 @@ const cartSchema = mongoose.Schema(
             required:[true , ""]
         } ,
         cusId: {
-            type: Boolean,
-            default: true
+            type: mongoose.Schema.Types.ObjectId,
+            required:[true , ""]
           },
         quantity:{
             type: Number,
@@ -32,7 +32,7 @@ const cartSchema = mongoose.Schema(
     }
 )
 
-const Cart  = mongoose.model('subcategory',cartSchema) ;
+const Cart  = mongoose.model('cart',cartSchema) ;
 
 module.exports = Cart ;
 
