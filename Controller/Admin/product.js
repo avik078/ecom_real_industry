@@ -134,7 +134,7 @@ const postCat = async (req, res) => {
        .catch((error) =>
          res.status(400).json({
            status: false,
-           msg: "server error !! please try again",
+           msg: "!! please try again",
            data: error,
          })
        );

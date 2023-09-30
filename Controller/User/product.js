@@ -29,13 +29,11 @@ const getAll = async (req, res) => {
               .json({ status: true, msg: "get data successfully", data: data });
           })
           .catch((error) => {
-            res
-              .status(400)
-              .json({
-                status: false,
-                msg: "Server error !! please try again",
-                data: error,
-              });
+            res.status(400).json({
+              status: false,
+              msg: "Server error !! please try again",
+              data: error,
+            });
           });
         // /\\/\/\/\/\/\/\/\
       }
@@ -60,7 +58,7 @@ const getSearch = async (req, res) => {
   await User.findOne({ _id: new mongoose.Types.ObjectId(userID) })
     .then(async (data) => {
       if (!data) {
-        res
+          res
           .status(200)
           .json({ status: false, msg: "User is not registed in DB" });
       } else {
@@ -75,13 +73,11 @@ const getSearch = async (req, res) => {
               .json({ status: true, msg: "get data successfully", data: data });
           })
           .catch((error) => {
-            res
-              .status(400)
-              .json({
-                status: false,
-                msg: "Server error !! please try again",
-                data: error,
-              });
+            res.status(400).json({
+              status: false,
+              msg: "Server error !! please try again",
+              data: error,
+            });
           });
         // /\\/\/\/\/\/\/\/\
       }
@@ -114,31 +110,25 @@ const getCategoryWise = async (req, res) => {
         ])
           .then((data) => {
             if (data.length > 0) {
-              res
-                .status(200)
-                .json({
-                  status: true,
-                  msg: "Category get successfully",
-                  data: data,
-                });
+              res.status(200).json({
+                status: true,
+                msg: "Category get successfully",
+                data: data,
+              });
             } else {
-              res
-                .status(400)
-                .json({
-                  status: false,
-                  msg: "Could not get category",
-                  data: data,
-                });
+              res.status(400).json({
+                status: false,
+                msg: "Could not get category",
+                data: data,
+              });
             }
           })
           .catch((error) =>
-            res
-              .status(400)
-              .json({
-                status: false,
-                msg: "Could not get category , no such category in DB",
-                data: error,
-              })
+            res.status(400).json({
+              status: false,
+              msg: "Could not get category , no such category in DB",
+              data: error,
+            })
           );
       }
     })
@@ -164,27 +154,22 @@ const getSubWise = async (req, res) => {
           .status(200)
           .json({ status: false, msg: "User is not registed in DB" });
       } else {
-        /////////////////
         await Product.aggregate([
           { $match: { subId: new mongoose.Types.ObjectId(subId) } },
         ])
           .then((data) => {
             if (data.length > 0) {
-              res
-                .status(200)
-                .json({
-                  status: true,
-                  msg: "Category get successfully",
-                  data: data,
-                });
+              res.status(200).json({
+                status: true,
+                msg: "Category get successfully",
+                data: data,
+              });
             } else {
-              res
-                .status(400)
-                .json({
-                  status: false,
-                  msg: "Could not get category",
-                  data: data,
-                });
+              res.status(400).json({
+                status: false,
+                msg: "Could not get category",
+                data: data,
+              });
             }
           })
           .catch((error) =>

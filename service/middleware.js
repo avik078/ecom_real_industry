@@ -17,10 +17,8 @@ const token = req.headers.authorization;
           if (decoded) {
             req.userID = decoded._id //  {_id: "hjgdfkhskahd"}
             next();
-             ////////////////
           } else {
             res.status(400).json({status:false,msg:"Token is either expired or not valid login again"})
-            //////////////////
           }
     } catch {
       res

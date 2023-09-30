@@ -116,7 +116,7 @@ const inQty = async (req, res) => {
   const { proId, quantity } = req.body;
   await Cart.updateOne({ proId: proId, cusId: userID }, { quantity: quantity })
     .then((data) => {
-      res
+        res
         .status(200)
         .json({ status: true, msg: "Quantity added successfully", data: data });
     })

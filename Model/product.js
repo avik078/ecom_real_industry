@@ -46,7 +46,7 @@ const productSchema = mongoose.Schema(
             required:[true , ""]
         },
         rating : {
-            type: Number 
+            type: String 
         } ,
         
         image : {

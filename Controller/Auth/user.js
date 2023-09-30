@@ -19,6 +19,7 @@ const compareHash = (pass, hash) => {
 const hashPassword = (raw) => {
   return passwordHash.generate(raw);
 };
+
 ////////////////////////////////////////////////////////// POST user register
 const postUser = async (req, res) => {
   const newOb = {
