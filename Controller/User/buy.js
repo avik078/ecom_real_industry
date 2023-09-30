@@ -23,9 +23,7 @@ const finalOrder = async (req, res) => {
     payment : payment ,
     totalPrice : totalPrice , 
     cusId: new mongoose.Types.ObjectId(userID),
-    randomId:
-      req.body.proName.slice(0, 4) +
-      Math.floor(Math.floor(Math.random() * 10000000)),
+    randomId: Math.floor(Math.floor(Math.random() * 10000000)) + "",
   };
   await Order.create(newOb)
     .then((data) =>
