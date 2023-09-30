@@ -7,7 +7,7 @@ var  proregister = require("./proregister");
 var  proget = require("./proget");
 var  cart = require("./cart");
 var  adminpic = require("./adminpic");
-
+var  buy  =  require("./buy");
 // /\/\/\/\/\/\/
 var  middleware_1 = require("../service/middleware").middleware_1
 
@@ -25,5 +25,6 @@ router.use("/api",adminpic)
 router.use("/api",proregister)
 router.use("/api",proget)
 router.use("/api",cart)
+router.use("/api",buy)
 
 module.exports = router;
