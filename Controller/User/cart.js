@@ -71,7 +71,7 @@ const addToCart = async (req, res) => {
   const { userID } = req;
   console.log(typeof userID);
   const newOb = { ...req.body, cusId: userID };
-  
+
   /////////////////////////////////////////////////////////////////
   await User.findOne({ _id: new mongoose.Types.ObjectId(userID) })
     .then(async (data) => {
@@ -82,21 +82,21 @@ const addToCart = async (req, res) => {
         });
       } else {
         ////\/\/\/\/\/\/\/\/\/\/\/\/\
-           await Cart.create(newOb)
-              .then((data) => {
-                res.status(200).json({
-                  status: true,
-                  msg: "added to cart successfully",
-                  data: data,
-                });
-              })
-              .catch((error) => {
-                res.status(400).json({
-                  status: false,
-                  msg: "Server error !! could not added to cart please try again",
-                  data: error,
-                });
+        await Cart.create(newOb)
+          .then((data) => {
+            res.status(200).json({
+              status: true,
+              msg: "added to cart successfully",
+              data: data,
             });
+          })
+          .catch((error) => {
+            res.status(400).json({
+              status: false,
+              msg: "Server error !! could not added to cart please try again",
+              data: error,
+            });
+          });
         // /\/\/\/\/\/\/\/\/\/\/\/\/\/\/
       }
     })
@@ -107,21 +107,28 @@ const addToCart = async (req, res) => {
         data: error,
       });
     });
-
 };
 
 //////////////////////////////////////////////////////  update quantity
 
-const  inQty = async (req,res) => {
-  const { userID } = req
-     const  {proId,quantity} = req.body
-     await Cart.updateOne({proId:proId,cusId:userID},{quantity:quantity}).then(data => {
-           res.status(200).json({status:true, msg:"Quantity added successfully" , data:data})
-     }).catch(error => 
-         {
-          res.status(400).json({status:false, msg:"Server Error !! Please try again !!" , data:error})
-         }
-      )
-}
+const inQty = async (req, res) => {
+  const { userID } = req;
+  const { proId, quantity } = req.body;
+  await Cart.updateOne({ proId: proId, cusId: userID }, { quantity: quantity })
+    .then((data) => {
+      res
+        .status(200)
+        .json({ status: true, msg: "Quantity added successfully", data: data });
+    })
+    .catch((error) => {
+      res
+        .status(400)
+        .json({
+          status: false,
+          msg: "Server Error !! Please try again !!",
+          data: error,
+        });
+    });
+};
 
-module.exports = { addToCart, getCart , inQty};
+module.exports = { addToCart, getCart, inQty };

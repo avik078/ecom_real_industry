@@ -27,7 +27,7 @@ const token = req.headers.authorization;
         .status(400)
         .json({
           status: false,
-          msg: "invalid token generate new token",
+          msg: "Invalid token generate a new token",
         });
     }
   } else {
