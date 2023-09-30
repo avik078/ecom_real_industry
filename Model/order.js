@@ -12,6 +12,10 @@ const   orderSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             required:[true , ""]
           },
+        productId : {
+            type: Array ,    // nested schema needed 
+            required : [true ,""]
+        } ,
         totalPrice: {
             type: Number ,
             required:[true , ""]
