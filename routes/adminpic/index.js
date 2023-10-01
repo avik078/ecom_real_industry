@@ -11,7 +11,7 @@ const imageStorage = multer.diskStorage({
   // Destination to store image     
   destination: './uploads/adminpics',  // automatically starts from root path , does not support relative path
     filename: (req, file, cb) => {
-        cb(null, file.fieldname + '_' + Date.now() 
+        cb(null, file.fieldname + '_' + Date.now() // .fieldname === key name postman , .originalname === uploaded file name 
            + path.extname(file.originalname))
           // file.fieldname is name of the field (image)
           // path.extname get the uploaded file extension
