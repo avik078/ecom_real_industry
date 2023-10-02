@@ -72,7 +72,7 @@ const addToCart = async (req, res) => {
   console.log(typeof userID);
   const newOb = { ...req.body, cusId: userID };
 
-  /////////////////////////////////////////////////////////////////
+
   await User.findOne({ _id: new mongoose.Types.ObjectId(userID) })
     .then(async (data) => {
       if (!data) {

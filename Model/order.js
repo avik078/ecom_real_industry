@@ -1,10 +1,11 @@
 const mongoose = require('mongoose') ;
+const  ordproOb = require('./ordpro');
 
 
 const   orderSchema = mongoose.Schema( 
     {   
-
-        randomId: {
+       
+        randomId: {                     // generated on backend side 
             type : String ,
             required: [true , ""]
         } ,
@@ -12,8 +13,8 @@ const   orderSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             required:[true , ""]
           },
-        productId : {
-            type: Array ,    // nested schema needed 
+        ordpro : {
+            type: [ordproOb.schema] ,    // multiple object inide array // nested schema // from frontend
             required : [true ,""]
         } ,
         totalPrice: {

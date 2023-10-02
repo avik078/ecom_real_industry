@@ -4,27 +4,42 @@ const mongoose = require('mongoose') ;
 
 const   ordproSchema = mongoose.Schema( 
     {   
-         
-        ordId:{
-            type: mongoose.Schema.Types.ObjectId,
+        quantity:{
+            type: Number,
+            default:1
+        } ,
+        _id:{  
+            type: mongoose.Schema.Types.ObjectId ,       
             required:[true , ""]
         } ,
-        cusId:{
-            type: mongoose.Schema.Types.ObjectId,
-            required:[true , ""]
-          },
-        proId:{
-            type: mongoose.Schema.Types.ObjectId ,
+        catId:{  
+            type: mongoose.Schema.Types.ObjectId ,       
             required:[true , ""]
         } ,
-        totalPrice: {
+        subId:{  
+            type: mongoose.Schema.Types.ObjectId ,       
+            required:[true , ""]
+        } ,
+        proName: {
+            type : String ,
+            required: [true , ""]
+        } ,
+        details: {
+            type : String ,
+            required: [true , ""]
+        } ,
+        buyPrice: {
             type: Number ,
             required:[true , ""]
         },
-        payment:{
-            type:String,
+        color: {
+            type: String ,
             required:[true , ""]
-        } ,
+        },
+        image: {
+            type: String ,
+            required:[true , ""]
+        },
         status: {
             type: Boolean,
             default: true

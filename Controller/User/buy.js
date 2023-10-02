@@ -12,18 +12,16 @@ const Category = require("../../Model/category");
 
 const Subcategory = require("../../Model/subcategory");
 
-/////////////////////////////////////////////////////////////////////////// Final order 
+/////////////////////////////////////////////////////////////////////////// Final check out with generate order id 
 const finalOrder = async (req, res) => {
-
+  
   const { userID } = req;
-  ////////////
+
   console.log("This Buy route")
   const  {proName,totalPrice,payment} = req.body
   const newOb = {
-    payment : payment ,
-    totalPrice : totalPrice , 
-    cusId: new mongoose.Types.ObjectId(userID),
-    randomId: Math.floor(Math.floor(Math.random() * 10000000)) + "",
+     ...req.body,
+     randomId: Math.floor(Math.floor(Math.random() * 10000000)) + "",
   };
   await Order.create(newOb)
     .then((data) =>
