@@ -13,8 +13,8 @@ const Category = require("../../Model/category");
 const Subcategory = require("../../Model/subcategory");
 
 /////////////////////////////////////////////////////////////////////////// Final check out with generate order id 
-const finalOrder = async (req, res) => {
-  
+const finalOrder = async (req, res) => {   //\/\/\/\/\/\/\/\/ when ever order is placed successfully launch a query to
+                                        //\/\/\/\/\/\// , empty the cart data in Db , to avoid duplicate order place
   const { userID } = req;
 
   console.log("This Buy route")
