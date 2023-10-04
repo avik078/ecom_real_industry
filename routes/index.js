@@ -9,9 +9,9 @@ var  cart = require("./cart");
 var  adminpic = require("./adminpic");
 var  userpic = require("./userpic");
 var  buy  =  require("./buy");
-// /\/\/\/\/\/\/
+var  wish  =  require("./wish");
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/
 var  middleware_1 = require("../service/middleware").middleware_1
-
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -28,5 +28,6 @@ router.use("/api",proregister)
 router.use("/api",proget)
 router.use("/api",cart)
 router.use("/api",buy)
+router.use("/api",wish)
 
 module.exports = router;
