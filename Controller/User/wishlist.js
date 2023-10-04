@@ -31,5 +31,4 @@ const addwish  = async (req,res) => {
 }
 
 
-
 module.exports = {addwish}

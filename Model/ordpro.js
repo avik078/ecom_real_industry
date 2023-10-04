@@ -11,23 +11,23 @@ const   ordproSchema = mongoose.Schema(
         _id:{  
             type: mongoose.Schema.Types.ObjectId ,       
             required:[true , ""]
-        } ,
+        },
         catId:{  
             type: mongoose.Schema.Types.ObjectId ,       
             required:[true , ""]
-        } ,
+        },
         subId:{  
             type: mongoose.Schema.Types.ObjectId ,       
             required:[true , ""]
-        } ,
+        },
         proName: {
             type : String ,
             required: [true , ""]
-        } ,
+        },
         details: {
             type : String ,
             required: [true , ""]
-        } ,
+        },
         buyPrice: {
             type: Number ,
             required:[true , ""]
@@ -36,10 +36,14 @@ const   ordproSchema = mongoose.Schema(
             type: String ,
             required:[true , ""]
         },
-        image: {
+        image:{
             type: String ,
             required:[true , ""]
         },
+        orderStatus:{
+            type : String ,
+            required : [true , ""]
+        } ,
         status: {
             type: Boolean,
             default: true
