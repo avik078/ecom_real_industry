@@ -10,7 +10,7 @@ var  adminpic = require("./adminpic");
 var  userpic = require("./userpic");
 var  buy  =  require("./buy");
 var  wish  =  require("./wish");
-// /\/\/\/\/\/\/\/\/\/\/\/\/\/
+// /\/\/\/\/\/\/\/\/\/\/\/\/\/\
 var  middleware_1 = require("../service/middleware").middleware_1
 
 /* GET home page. */

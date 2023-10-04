@@ -5,8 +5,7 @@ var userCart = require("../../Controller/User/cart");
 
 router.get("/getcart" ,userCart.getCart)
 router.post("/addcart" ,userCart.addToCart)
-// router.post("/getsearch" ,userPro.getSearch)
-// router.post("/getcatwis" ,userPro.getCategoryWise)  
-// router.post("/getsubwis" ,userPro.getSubWise) 
+router.post("/incqty" ,userCart.inQty)
+router.delete("/delcart" ,userCart.delfromCart)
 
 module.exports = router;

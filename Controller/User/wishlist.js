@@ -10,7 +10,7 @@ const Subcategory = require("../../Model/subcategory");
 
 const Wish = require("../../Model/wish");
 
-
+/////////////////////////////////////////////////////////////////////////////////////
 const addwish  = async (req,res) => {
    
   const {cusId,proId} = req.body
@@ -29,5 +29,7 @@ const addwish  = async (req,res) => {
  ).
  catch(error => res.status(400).json({status:true , msg:"Could not perform  the opration successfully !! try again !!", data:error}))
 }
+
+
 
 module.exports = {addwish}
