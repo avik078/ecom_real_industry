@@ -1,6 +1,5 @@
 const mongoose = require('mongoose') ;
-const  ordproOb = require('./ordpro');
-
+const  ordpro= require('./ordpro')
 
 const   orderSchema = mongoose.Schema( 
     {   
@@ -14,7 +13,7 @@ const   orderSchema = mongoose.Schema(
             required:[true , ""]
           },
         ordpro : {
-            type: [ordproOb.schema] ,    // multiple object inide array // nested schema // from frontend
+            type: [ordpro.schema] ,    // multiple object inide array // nested schema // from frontend
             required : [true ,""]
         } ,
         totalPrice: {
@@ -40,7 +39,7 @@ const   orderSchema = mongoose.Schema(
     }
 )
 
-const Order  = mongoose.model('order',orderSchema) ;
+const Order  = mongoose.model('orderDetail',orderSchema) ;
 
 module.exports = Order ;
 

@@ -112,13 +112,13 @@ const delfromCart = async (req, res) => {
   await Cart.deleteOne({
     proId: new mongoose.Types.ObjectId(proId),
     cusId: new mongoose.Types.ObjectId(userID),
-  })
+    })
     .then((data) => {
       res
         .status(200)
         .json({
           status: true,
-          msg: "Product delted from cart successfully",
+          msg: "Product deleted from cart successfully",
           data: data,
         });
     })

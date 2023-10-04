@@ -50,7 +50,8 @@ const getAll = async (req, res) => {
 //////////////////////////////////// POST SEARCH keyword RegEx , GET all match
 
 const getSearch = async (req, res) => {
-  const { keyword } = req.body;
+  const {keyword} = req.params
+  // const { keyword } = req.body;
   console.log(keyword);
   const { userID } = req;
   console.log(userID);
@@ -92,7 +93,8 @@ const getSearch = async (req, res) => {
 };
 //////////////////////////////////////////////// POST category _id , GET all match
 const getCategoryWise = async (req, res) => {
-  const { catId } = req.body;
+  const {catId} = req.params
+  // const { catId } = req.body;
   console.log(catId);
   const { userID } = req;
   console.log(userID);
@@ -142,7 +144,8 @@ const getCategoryWise = async (req, res) => {
 };
 //////////////////////////////////////////////// POST subcategory _id , GET all match
 const getSubWise = async (req, res) => {
-  const { subId } = req.body;
+  const {subId} = req.params
+  // const { subId } = req.body;
   console.log(subId);
   const { userID } = req;
   console.log(userID);

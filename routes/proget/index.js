@@ -5,8 +5,8 @@ var userPro = require("../../Controller/User/product");
 
 
 router.get("/getall" ,userPro.getAll)
-router.post("/getsearch" ,userPro.getSearch)
-router.post("/getcatwis" ,userPro.getCategoryWise)  
-router.post("/getsubwis" ,userPro.getSubWise) 
+router.get("/getsearch/:keyword" ,userPro.getSearch)
+router.get("/getcatwis/:catId" ,userPro.getCategoryWise)  
+router.get("/getsubwis/:subId" ,userPro.getSubWise) 
 
 module.exports = router;
