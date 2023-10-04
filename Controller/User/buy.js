@@ -22,7 +22,7 @@ const finalOrder = async (req, res) => {
   const { proName, totalPrice, payment } = req.body;
   const newOb = {
     ...req.body,
-    randomId: Math.floor(Math.floor(Math.random() * 10000000)) + "",
+    orderInvoice: Math.floor(Math.floor(Math.random() * 10000000)) + "",
   };
   await Order.create(newOb)
     .then(

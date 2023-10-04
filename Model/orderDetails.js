@@ -4,7 +4,7 @@ const  ordpro= require('./ordpro')
 const   orderSchema = mongoose.Schema( 
     {   
        
-        randomId: {                     // generated on backend side 
+        orderInvoice: {                     // generated on backend side 
             type : String ,
             required: [true , ""]
         } ,
