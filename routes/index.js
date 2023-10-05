@@ -10,6 +10,7 @@ var  adminpic = require("./adminpic");
 var  userpic = require("./userpic");
 var  buy  =  require("./buy");
 var  wish  =  require("./wish");
+var  adminStock =  require("./adminStock") ;
 // /\/\/\/\/\/\/\/\/\/\/\/\/\/\
 var  middleware_1 = require("../service/middleware").middleware_1
 
@@ -29,5 +30,6 @@ router.use("/api",proget)
 router.use("/api",cart)
 router.use("/api",buy)
 router.use("/api",wish)
+router.use("/api",adminStock)
 
 module.exports = router;

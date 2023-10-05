@@ -3,7 +3,7 @@ const mongoose = require('mongoose') ;
 
 
 const productSchema = mongoose.Schema( 
-    
+
     {   
         catId:{
             type: mongoose.Schema.Types.ObjectId ,

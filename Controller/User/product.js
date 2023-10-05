@@ -4,75 +4,111 @@ const User = require("../../Model/user");
 
 const Product = require("../../Model/product");
 
+const  Stock =  require("../../Model/stock")
+
 const Category = require("../../Model/category");
 
 const Subcategory = require("../../Model/subcategory");
 
 ////////////////////////////////////// GET ALL
 const getAll = async (req, res) => {
-  ////////////////////
+  /////////////////////////////////////////
   const { userID } = req;
   console.log(userID);
-  console.log(typeof userID); 
+  console.log(typeof userID);
 
-  await Product.aggregate([{
-        $lookup: {
-          from: "categories",
-          localField: "catId",
-          foreignField: "_id",
-          as: "category",
-          pipeline: [
-            {
-              $project: {
-                catName: 1,
-                   _id:0
-              },
+  await Product.aggregate([
+    {
+      $lookup: {
+        from: "categories",
+        localField: "catId",
+        foreignField: "_id",
+        as: "category",
+        pipeline: [
+          {
+            $project: {
+              catName: 1,
+              _id: 0,
             },
-          ],
-        },
-  },
-  {
-    $lookup: {
-      from: "subcategories",
-      localField: "subId",
-      foreignField: "_id",
-      as: "subCategory",
-      pipeline: [
-        {
-          $project: {
-            subName: 1,
-            _id:0
           },
-        },
-      ],
+        ],
+      },
     },
-}, 
- { $unwind: "$category"},
- { $unwind: "$subCategory"}
-,{
-  $addFields:{}
-}
-  ,{$project:{proName:1 ,details:1,price:1,stock:1,discountPrice:1,color:1,image:1}},{ $limit: 5 }])
-          .then((data) => {
-            res
-              .status(200)
-              .json({ status: true, msg: "get data successfully", data: data });
-          })
-          .catch((error) => {
-            res.status(400).json({
-              status: false,
-              msg: "Server error !! please try again",
-              data: error,
-            });
-          });
-
-
+    {
+      $lookup: {
+        from: "subcategories",
+        localField: "subId",
+        foreignField: "_id",
+        as: "subCategory",
+        pipeline: [
+          {
+            $project: {
+              subName: 1,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "stocks",
+        localField: "_id",
+        foreignField: "proId",
+        as: "stockToColor",
+        pipeline: [
+          {
+            $project: {
+              color:1,
+              stock : 1 ,
+              _id: 0,
+            },
+          },
+        ],
+      },
+    } ,
+    { $unwind: "$category" },
+    { $unwind: "$subCategory" },
+    {
+      $addFields: {
+        categoryName: "$category.catName",
+        subcategoryName: "$subCategory.subName",
+      },
+    },
+    {
+      $project: {
+        proName: 1,
+        categoryName: 1,
+        subcategoryName: 1,
+        details: 1,
+        price: 1,
+        stock: 1,
+        discountPrice: 1,
+        color: 1,
+        image: 1,
+        stockToColor:1
+      },
+    },
+    { $limit: 5 },
+  ])
+    .then((data) => {
+      res
+        .status(200)
+        .json({ status: true, msg: "get data successfully", data: data });
+    })
+    .catch((error) => {
+      res.status(400).json({
+        status: false,
+        msg: "Server error !! please try again",
+        data: error,
+      });
+    });
 };
 
 //////////////////////////////////// POST SEARCH keyword RegEx , GET all match
 
 const getSearch = async (req, res) => {
-  const {keyword} = req.params
+  const { keyword } = req.params;
   // const { keyword } = req.body;
   console.log(keyword);
   const { userID } = req;
@@ -81,17 +117,88 @@ const getSearch = async (req, res) => {
   await User.findOne({ _id: new mongoose.Types.ObjectId(userID) })
     .then(async (data) => {
       if (!data) {
-          res
+        res
           .status(200)
           .json({ status: false, msg: "User is not registed in DB" });
       } else {
         ////\/\/\/\/\/\/\/\
         await Product.aggregate([
           { $match: { proName: { $regex: `${keyword}`, $options: "i" } } },
+          {
+            $lookup: {
+              from: "categories",
+              localField: "catId",
+              foreignField: "_id",
+              as: "category",
+              pipeline: [
+                {
+                  $project: {
+                    catName: 1,
+                    _id: 0,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $lookup: {
+              from: "subcategories",
+              localField: "subId",
+              foreignField: "_id",
+              as: "subCategory",
+              pipeline: [
+                {
+                  $project: {
+                    subName: 1,
+                    _id: 0,
+                  },
+                },
+              ],
+            },
+          },
+          {
+            $lookup: {
+              from: "stocks",
+              localField: "_id",
+              foreignField: "proId",
+              as: "stockToColor",
+              pipeline: [
+                {
+                  $project: {
+                    color:1,
+                    stock : 1 ,
+                    _id: 0,
+                  },
+                },
+              ],
+            },
+          } ,
+          { $unwind: "$category" },
+          { $unwind: "$subCategory" },
+          {
+            $addFields: {
+              categoryName: "$category.catName",
+              subcategoryName: "$subCategory.subName",
+            },
+          },
+          {
+            $project: {
+              proName: 1,
+              categoryName: 1,
+              subcategoryName: 1,
+              details: 1,
+              price: 1,
+              stock: 1,
+              discountPrice: 1,
+              color: 1,
+              image: 1,
+              stockToColor:1
+            },
+          },
           { $limit: 5 },
         ])
           .then((data) => {
-               res
+            res
               .status(200)
               .json({ status: true, msg: "get data successfully", data: data });
           })
@@ -115,7 +222,7 @@ const getSearch = async (req, res) => {
 };
 //////////////////////////////////////////////// POST category _id , GET all match
 const getCategoryWise = async (req, res) => {
-  const {catId} = req.params
+  const { catId } = req.params;
   // const { catId } = req.body;
   console.log(catId);
   const { userID } = req;
@@ -166,7 +273,7 @@ const getCategoryWise = async (req, res) => {
 };
 //////////////////////////////////////////////// POST subcategory _id , GET all match
 const getSubWise = async (req, res) => {
-  const {subId} = req.params
+  const { subId } = req.params;
   // const { subId } = req.body;
   console.log(subId);
   const { userID } = req;
