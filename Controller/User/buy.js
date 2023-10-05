@@ -10,7 +10,7 @@ const Product = require("../../Model/product");
 
 const Category = require("../../Model/category");
 
-const Stock = require("../../Model/stock")
+const Stock = require("../../Model/stock");
 
 const StockHistory = require("../../Model/stockHistory");
 
@@ -21,56 +21,75 @@ const finalOrder = async (req, res) => {
   //\/\/\/\/\/\/\/\/ when ever order is placed successfully launch a query to
   //\/\/\/\/\/\// , empty the cart data in Db , to avoid duplicate order place
   const { userID } = req;
-
+  let flag = 0
   console.log("This Buy route");
   const { proName, totalPrice, payment } = req.body;
-  const  orderId = Math.floor(Math.floor(Math.random() * 10000000)) + "" ;
+  const orderId = Math.floor(Math.floor(Math.random() * 10000000)) + "";
   const newOb = {
     ...req.body,
     orderInvoice: orderId,
   };
   await Order.create(newOb)
-    .then(
-               async (data) => {
-         /* 1*/      const d = await Cart.deleteMany({ cusId: new mongoose.Types.ObjectId(userID) })
-        /* 2*/       req.body.ordpro.forEach(async element => {
-                        try {  
-                              const updatestock = await Stock.updateOne({
-                                    proId : new mongoose.Types.ObjectId(element._id) ,
-                                    color: { $regex: `${element.color}`, $options: "i" }, 
-                                    },
-                                    { $inc: { stock: -Math.abs((Number(element.quantity))) } }
-                                )
+    .then(async (data) => {
+      /* 1*/ const d = await Cart.deleteMany({
+        cusId: new mongoose.Types.ObjectId(userID),
+      });
+      /* 2*/ req.body.ordpro.forEach(async (element) => {
+        try {
+              const quantityAvailable = await Stock.findOne({
+                proId: new mongoose.Types.ObjectId(element._id),
+                color: { $regex: `${element.color}`, $options: "i" }
+          });
 
-          /* 3*/            const updatestockHistory = await StockHistory.create(
-                                  {
-                                    usrId : new mongoose.Types.ObjectId(userID) ,
-                                    ordId:orderId,
-                                    proId: new mongoose.Types.ObjectId(element._id) ,
-                                    qty : element.quantity,
-                                    color : element.color , 
-                                  }
-                             )
-                              
-                        }catch(error) {
-                         res.status(400).json({status:false,msg:"Server error !! please try again !!", data:error}) 
-                        }    
-                     });
+          console.log(quantityAvailable.stock);
 
-           
-      /* 5*/      res.status(200).json({ status: true, msg: "Order Buy successful" });
-               }
-         ) 
-          .catch((error) => {
-            res
-              .status(200)
-              .json({
-                status: true,
-                msg: "Could not place order successfully !! try again !!",
-              });
-          })
-    
+           if (quantityAvailable.stock > Math.abs(Number(element.quantity))) {
+            const updatestock = await Stock.updateOne(
+              {
+                proId: new mongoose.Types.ObjectId(element._id),
+                color: { $regex: `${element.color}`, $options: "i" },
+              },
+              { $inc: { stock: -Math.abs(Number(element.quantity)) } }
+            );
 
+            /* 3*/ const updatestockHistory = await StockHistory.create({
+              usrId: new mongoose.Types.ObjectId(userID),
+              ordId: orderId,
+              proId: new mongoose.Types.ObjectId(element._id),
+              qty: element.quantity,
+              color: element.color,
+            });
+           } else {
+                flag = 1 ;
+                
+            /////////////////
+          }
+        } catch (error) {
+          res
+            .status(400)
+            .json({
+              status: false,
+              msg: "Server error !! please try again !!",
+              data: error,
+            });
+       }      
+  }) ;       // end of loop block
+     
+       if (flag) {
+        res
+        .status(400)
+        .json({ status: true, msg: "Order Qunatity is not available !! decrease the quantity" }); 
+         }
+        res
+        .status(200)
+        .json({ status: true, msg: "Order Buy successful !!" });
+    })
+    .catch((error) => {
+      res.status(200).json({
+          status: true,
+          msg: "Could not place order successfully !! try again !!",
+      });
+    });
 };
 
 module.exports = { finalOrder };
