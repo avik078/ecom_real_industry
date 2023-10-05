@@ -13,10 +13,14 @@ const cartSchema = mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             required:[true , ""]
           },
+        color:{
+           type: String ,
+           require: [true , ""]    
+        },
         quantity:{
             type: Number,
             default:1
-        } ,
+        },
         status: {
             type: Boolean,
             default: true

@@ -72,12 +72,14 @@ const addToCart = async (req, res) => {
   console.log(typeof userID);
   const newOb = { ...req.body, cusId: userID };
   await Cart.create(newOb)
-    .then((data) => {
+    .then((data) => {    
+      //\/\/\/\/\/\/\/\/\/\/\/\
       res.status(200).json({
         status: true,
         msg: "added to cart successfully",
         data: data,
       });
+      ///\/\/\/\/\/\/\/\/\/\/\/\
     })
     .catch((error) => {
       res.status(400).json({

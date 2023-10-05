@@ -10,6 +10,8 @@ const Product = require("../../Model/product");
 
 const Category = require("../../Model/category");
 
+const Stock = require("../../Model/stock")
+
 const Subcategory = require("../../Model/subcategory");
 
 /////////////////////////////////////////////////////////////////////////// Final check out with generate order id
@@ -26,11 +28,23 @@ const finalOrder = async (req, res) => {
   };
   await Order.create(newOb)
     .then(
-      async (data) =>
-        await Cart.deleteMany({ cusId: new mongoose.Types.ObjectId(userID) })
-          .then((data) => {
-            res.status(200).json({ status: true, msg: "Order Buy successful" });
-          })
+               async (data) => {
+         /* 1*/      const d = await Cart.deleteMany({ cusId: new mongoose.Types.ObjectId(userID) })
+        /* 2*/       req.body.ordpro.forEach(async element => {
+                        try {
+                              const s = await Stock.updateOne({
+                              proId : new mongoose.Types.ObjectId(element._id) ,
+                              color: { $regex: `${element.color}`, $options: "i" }, 
+                              },
+                              { $inc: { stock: -element.quantity } }
+                            )
+                        }catch(error) {
+                         res.status(400).json({status:false,msg:"Server error !! please try again !!", data:error}) 
+                        }    
+                     });
+      /* 3*/         res.status(200).json({ status: true, msg: "Order Buy successful" });
+                    }
+         ) 
           .catch((error) => {
             res
               .status(200)
@@ -39,14 +53,9 @@ const finalOrder = async (req, res) => {
                 msg: "Could not place order successfully !! try again !!",
               });
           })
-    )
-    .catch((error) =>
-      res.status(400).json({
-        status: false,
-        msg: "Could not check out please try again !!",
-        data: error,
-      })
-    );
+    
+   
+  
 };
 
 module.exports = { finalOrder };
