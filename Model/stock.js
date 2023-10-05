@@ -12,6 +12,7 @@ const stockSchema = mongoose.Schema(
             type: Number ,
             required:[true , ""]
         } ,
+        
         color : {
             type: String ,
             required:[true , ""]
@@ -22,6 +23,8 @@ const stockSchema = mongoose.Schema(
         timestamps: true
     }
 )
+
+
 
 const Stock  = mongoose.model('stock',stockSchema) ;
 module.exports = Stock ;

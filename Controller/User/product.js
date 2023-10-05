@@ -167,6 +167,7 @@ const getSearch = async (req, res) => {
                   $project: {
                     color:1,
                     stock : 1 ,
+                    
                     _id: 0,
                   },
                 },
@@ -179,6 +180,11 @@ const getSearch = async (req, res) => {
             $addFields: {
               categoryName: "$category.catName",
               subcategoryName: "$subCategory.subName",
+            },
+          },
+          {
+            $addFields: {
+              stockStatus: "$category.catName",
             },
           },
           {

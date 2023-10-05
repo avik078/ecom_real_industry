@@ -12,6 +12,8 @@ const Category = require("../../Model/category");
 
 const Stock = require("../../Model/stock")
 
+const StockHistory = require("../../Model/stockHistory");
+
 const Subcategory = require("../../Model/subcategory");
 
 /////////////////////////////////////////////////////////////////////////// Final check out with generate order id
@@ -22,28 +24,42 @@ const finalOrder = async (req, res) => {
 
   console.log("This Buy route");
   const { proName, totalPrice, payment } = req.body;
+  const  orderId = Math.floor(Math.floor(Math.random() * 10000000)) + "" ;
   const newOb = {
     ...req.body,
-    orderInvoice: Math.floor(Math.floor(Math.random() * 10000000)) + "",
+    orderInvoice: orderId,
   };
   await Order.create(newOb)
     .then(
                async (data) => {
          /* 1*/      const d = await Cart.deleteMany({ cusId: new mongoose.Types.ObjectId(userID) })
         /* 2*/       req.body.ordpro.forEach(async element => {
-                        try {
-                              const s = await Stock.updateOne({
-                              proId : new mongoose.Types.ObjectId(element._id) ,
-                              color: { $regex: `${element.color}`, $options: "i" }, 
-                              },
-                              { $inc: { stock: -element.quantity } }
-                            )
+                        try {  
+                              const updatestock = await Stock.updateOne({
+                                    proId : new mongoose.Types.ObjectId(element._id) ,
+                                    color: { $regex: `${element.color}`, $options: "i" }, 
+                                    },
+                                    { $inc: { stock: -Math.abs((Number(element.quantity))) } }
+                                )
+
+          /* 3*/            const updatestockHistory = await StockHistory.create(
+                                  {
+                                    usrId : new mongoose.Types.ObjectId(userID) ,
+                                    ordId:orderId,
+                                    proId: new mongoose.Types.ObjectId(element._id) ,
+                                    qty : element.quantity,
+                                    color : element.color , 
+                                  }
+                             )
+                              
                         }catch(error) {
                          res.status(400).json({status:false,msg:"Server error !! please try again !!", data:error}) 
                         }    
                      });
-      /* 3*/         res.status(200).json({ status: true, msg: "Order Buy successful" });
-                    }
+
+           
+      /* 5*/      res.status(200).json({ status: true, msg: "Order Buy successful" });
+               }
          ) 
           .catch((error) => {
             res
@@ -54,8 +70,7 @@ const finalOrder = async (req, res) => {
               });
           })
     
-   
-  
+
 };
 
 module.exports = { finalOrder };
