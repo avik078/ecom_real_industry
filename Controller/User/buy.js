@@ -33,9 +33,9 @@ const finalOrder = async (req, res) => {
     };
 
     
-    
+    const session = await mongoose.startSession();
     try {
-        const session = await mongoose.startSession();
+       
         session.startTransaction(); 
         let flag  = false
         let prName
