@@ -85,6 +85,7 @@ const finalOrder = async (req, res) => {
         }     
     }catch (error) {
         console.log("An error occurred during the transaction:" + error);
+        res.status(400).json({status:false,msg:"Server error !! try again !!",data:error})
         await session.abortTransaction()
     }finally{
         await session.endSession()
