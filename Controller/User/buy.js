@@ -18,78 +18,78 @@ const Subcategory = require("../../Model/subcategory");
 
 /////////////////////////////////////////////////////////////////////////// Final check out with generate order id
 const finalOrder = async (req, res) => {
-  //\/\/\/\/\/\/\/\/ when ever order is placed successfully launch a query to
-  //\/\/\/\/\/\// , empty the cart data in Db , to avoid duplicate order place
-  const { userID } = req;
-  let flag = 0
-  console.log("This Buy route");
-  const { proName, totalPrice, payment } = req.body;
-  const orderId = Math.floor(Math.floor(Math.random() * 10000000)) + "";
-  const newOb = {
-    ...req.body,
-    orderInvoice: orderId,
-  };
-  await Order.create(newOb)
-    .then(async (data) => {
-      /* 1*/ const d = await Cart.deleteMany({
-        cusId: new mongoose.Types.ObjectId(userID),
-      });
-      /* 2*/ req.body.ordpro.forEach(async (element) => {
-        try {
-              const quantityAvailable = await Stock.findOne({
-                proId: new mongoose.Types.ObjectId(element._id),
-                color: { $regex: `${element.color}`, $options: "i" }
-          });
+    //\/\/\/\/\/\/\/\/ when ever order is placed successfully launch a query to
+    //\/\/\/\/\/\// , empty the cart data in Db , to avoid duplicate order place
+    const { userID } = req;
+    
+    let flag = false;
+    let buyItem = null;
+    console.log("This Buy route");
+    const { proName, totalPrice, payment } = req.body;
+    const orderId = Math.floor(Math.floor(Math.random() * 10000000)) + "";
+    const newOb = {
+        ...req.body,
+        orderInvoice: orderId,
+    };
 
-          console.log(quantityAvailable.stock);
+    
+    
+    try {
+        const session = await mongoose.startSession();
+        session.startTransaction(); 
+        let flag  = false
+        let prName
+        for (let pr of req.body.ordpro ) {
+             ///////////////////////////////////////////   1
+             const quantityAvailable = await Stock.findOne({
+                proId: new mongoose.Types.ObjectId(pr._id),
+                color: { $regex: `${pr.color}`, $options: "i" }
+             } ,null  , { session });
+            console.log(quantityAvailable.stock)
+            ///////////////////////////////////////
+        
+            if (quantityAvailable.stock > Math.abs(Number(pr.quantity))) {
 
-           if (quantityAvailable.stock > Math.abs(Number(element.quantity))) {
-            const updatestock = await Stock.updateOne(
-              {
-                proId: new mongoose.Types.ObjectId(element._id),
-                color: { $regex: `${element.color}`, $options: "i" },
-              },
-              { $inc: { stock: -Math.abs(Number(element.quantity)) } }
-            );
+                const updatestock = await Stock.updateOne(
+                    {
+                      proId: new mongoose.Types.ObjectId(pr._id),
+                      color: { $regex: `${pr.color}`, $options: "i" },
+                    },
+                    { $inc: { stock: -Math.abs(Number(pr.quantity)) } } ,
+                    { session }
+                  );
 
-            /* 3*/ const updatestockHistory = await StockHistory.create({
-              usrId: new mongoose.Types.ObjectId(userID),
-              ordId: orderId,
-              proId: new mongoose.Types.ObjectId(element._id),
-              qty: element.quantity,
-              color: element.color,
-            });
-           } else {
-                flag = 1 ;
-                
-            /////////////////
-          }
-        } catch (error) {
-          res
-            .status(400)
-            .json({
-              status: false,
-              msg: "Server error !! please try again !!",
-              data: error,
-            });
-       }      
-  }) ;       // end of loop block
-     
-       if (flag) {
-        res
-        .status(400)
-        .json({ status: true, msg: "Order Qunatity is not available !! decrease the quantity" }); 
-         }
-        res
-        .status(200)
-        .json({ status: true, msg: "Order Buy successful !!" });
-    })
-    .catch((error) => {
-      res.status(200).json({
-          status: true,
-          msg: "Could not place order successfully !! try again !!",
-      });
-    });
+                  const updatestockHistory = await StockHistory.create([{
+                    usrId: new mongoose.Types.ObjectId(userID),
+                    ordId: orderId,
+                    proId: new mongoose.Types.ObjectId(pr._id),
+                    qty: pr.quantity,
+                    color: pr.color,
+                  }],{ session });
+
+            }else {
+                prName = pr.proName
+                flag = true ;
+                break ;
+            }
+        }
+        
+        if (flag){
+            await session.abortTransaction() 
+            res.status(400).json({status:false,msg:`😣 Could not buy stock not available !! decrease quantity of ${prName}`})
+        }else {
+            const newOrder =  await Order.create([newOb],{ session })
+            const deleteFromCart = await Cart.deleteMany({cusId: new mongoose.Types.ObjectId(userID)},{ session });
+            await session.commitTransaction() 
+            res.status(200).json({status:true,msg:"😃 Buy successful !!"}) 
+        }     
+    }catch (error) {
+        console.log("An error occurred during the transaction:" + error);
+        await session.abortTransaction()
+    }finally{
+        await session.endSession()
+    }
+      
 };
 
 module.exports = { finalOrder };
