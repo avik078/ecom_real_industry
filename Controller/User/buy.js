@@ -76,7 +76,7 @@ const finalOrder = async (req, res) => {
         
         if (flag){
             await session.abortTransaction() 
-            res.status(400).json({status:false,msg:`😣 Could not buy stock not available !! decrease quantity of ${prName}`})
+            res.status(400).json({status:false,msg:`😣 Could not buy stock not available for ${prName} !!`})
         }else {
             const newOrder =  await Order.create([newOb],{ session })
             const deleteFromCart = await Cart.deleteMany({cusId: new mongoose.Types.ObjectId(userID)},{ session });
