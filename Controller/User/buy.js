@@ -73,7 +73,6 @@ const finalOrder = async (req, res) => {
                 break ;
             }
         }
-        
         if (flag){
             await session.abortTransaction() 
             res.status(400).json({status:false,msg:`😣 Could not buy stock not available for ${prName} !!`})
